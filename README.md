@@ -25,32 +25,36 @@ CS 152 project · English ↔ Turkish
 | Android app | Kotlin, Jetpack Compose |
 | Phone database | Room (SQLite) |
 | On-device ML | ML Kit Text Recognition, ML Kit Translation |
-| Backend | Java, Spring Boot (REST API) |
+| Backend | Java 17, Spring Boot 3 (REST API) |
 | Server database | PostgreSQL |
+| Design pattern | Model–View–Controller (MVC) |
 
 ## Folder structure
 
 ```
-android/   Android app (Family Mode + Traveler Mode)
+android/   Android app (Family Mode + Traveler Mode)   → open this folder in Android Studio
 backend/   Spring Boot REST API
-docs/      Project report
+docs/      Architecture, API contract, project report
 ```
 
 ## How to run
 
-### Backend
-1. Install Java (version TBD) and PostgreSQL.
-2. Create a database named `safety_companion`.
-3. Run:
 ```bash
-   cd backend
-   ./mvnw spring-boot:run
+# Database (Mac, one time)
+brew install postgresql@16
+brew services start postgresql@16
+createdb safety_companion
+
+# Backend
+cd backend
+DB_USER=$(whoami) DB_PASSWORD= ./mvnw spring-boot:run
 ```
 
-### Android app
-1. Open the `android/` folder in Android Studio.
-2. Start an emulator.
-3. Click **Run**.
+Then open the `android/` folder in Android Studio and click **Run** on an emulator.
+
+Demo family login: **demo@cs152.dev / demo1234**
+
+Full steps: [`docs/architecture.md`](docs/architecture.md#how-to-run)
 
 ## Team
 
@@ -59,4 +63,6 @@ docs/      Project report
 
 ## Docs
 
-See [`docs/Project_Report_CS152.md`](docs/Project_Report_CS152.md).
+- [`docs/architecture.md`](docs/architecture.md): MVC design, flows, who owns which files
+- [`docs/api.md`](docs/api.md): API contract (endpoints and JSON)
+- [`docs/Project_Report_CS152.md`](docs/Project_Report_CS152.md): project report

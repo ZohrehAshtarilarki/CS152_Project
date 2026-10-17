@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Shared strings. Family texts: strings_family.xml. Traveler texts: strings_traveler.xml -->
+<resources>
+    <string name="app_name">Safety Companion</string>
+    <string name="role_title">Hoş geldiniz / Welcome</string>
+    <string name="role_traveler">Yolcuyum\n(I am the traveler)</string>
+    <string name="role_family">I am the family\n(Aileyim)</string>
+</resources>

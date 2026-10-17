@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Family side texts (English). Owner: Family side. -->
+<resources>
+    <string name="family_login_title">Family sign in</string>
+    <string name="family_register_title">Create a family account</string>
+    <string name="family_name">Your name</string>
+    <string name="family_email">Email</string>
+    <string name="family_password">Password</string>
+    <string name="family_sign_in">Sign in</string>
+    <string name="family_create_account">Create account</string>
+    <string name="family_have_account">I already have an account</string>
+    <string name="family_need_account">New here? Create an account</string>
+    <string name="family_switch_mode">Back to start</string>
+    <string name="family_hello">Hello, %1$s</string>
+    <string name="family_new_trip">New trip</string>
+    <string name="family_refresh">Refresh</string>
+    <string name="family_logout">Log out</string>
+    <string name="family_no_trips">No trips yet.</string>
+    <string name="family_trip_route">Route: %1$s</string>
+    <string name="family_edit_trip">Edit trip</string>
+    <string name="family_pair_phone">Pair traveler\'s phone</string>
+    <string name="family_pair_title">Pair the traveler\'s phone</string>
+    <string name="family_pair_instructions">Call the traveler. Ask them to read the 6-digit code on their phone, then type it here.</string>
+    <string name="family_pair_code">6-digit code</string>
+    <string name="family_pair_button">Pair phone</string>
+    <string name="family_back">Back</string>
+    <string name="family_editor_todo">Trip editor: add the form for flights, emergency contacts and staff cards here, then call controller.saveTrip(...).</string>
+</resources>
