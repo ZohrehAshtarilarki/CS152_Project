@@ -1,38 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Traveler side texts (Turkish, correct Turkish letters). Owner: Traveler side. -->
+<!-- Traveler side texts in English (default language).
+     Turkish translation: values-tr/strings_traveler.xml (used when the phone language is Turkish).
+     Owner: Traveler side. -->
 <resources>
-    <string name="traveler_title">Yolculuk Yardımcısı</string>
-    <string name="btn_what_now">Şimdi ne yapmalıyım?</string>
-    <string name="btn_read_sign">Tabelayı oku</string>
-    <string name="btn_talk_staff">Görevliyle konuş</string>
-    <string name="btn_need_help">Yardıma ihtiyacım var</string>
-    <string name="btn_back">Geri</string>
-    <string name="btn_update">Bilgileri güncelle</string>
-    <string name="last_known">Son bilinen bilgi: %1$s</string>
-    <string name="offline_suffix">(İnternet yok)</string>
+    <string name="traveler_title">Travel Helper</string>
+    <string name="btn_what_now">What should I do now?</string>
+    <string name="btn_read_sign">Read a sign</string>
+    <string name="btn_talk_staff">Talk to airport staff</string>
+    <string name="btn_need_help">I need help</string>
+    <string name="btn_back">Back</string>
+    <string name="btn_update">Update information</string>
+    <string name="last_known">Last known info: %1$s</string>
+    <string name="offline_suffix">(No internet)</string>
 
-    <string name="pairing_title">Telefonu bağlama</string>
-    <string name="pairing_instructions">Bu kodu telefonda ailenize okuyun.</string>
-    <string name="pairing_waiting">Aileniz kodu giriyor, lütfen bekleyin…</string>
-    <string name="pairing_expired">Kodun süresi doldu.</string>
-    <string name="pairing_error">Sunucuya bağlanılamadı. İnternetinizi kontrol edin.</string>
-    <string name="pairing_new_code">Yeni kod al</string>
+    <string name="pairing_title">Pair this phone</string>
+    <string name="pairing_instructions">Read this code to your family on the phone.</string>
+    <string name="pairing_waiting">Your family is entering the code, please wait…</string>
+    <string name="pairing_expired">The code has expired.</string>
+    <string name="pairing_error">Could not reach the server. Check your internet.</string>
+    <string name="pairing_new_code">Get a new code</string>
 
-    <string name="what_now_no_trip">Henüz yolculuk bilgisi yok.</string>
-    <string name="what_now_upcoming">Sonraki uçuşunuz</string>
-    <string name="what_now_current">Şu anki uçuşunuz</string>
-    <string name="what_now_next">Sonraki bağlantı uçuşunuz</string>
-    <string name="what_now_done">Yolculuğunuz tamamlandı. İyi günler!</string>
+    <string name="what_now_no_trip">No trip information yet.</string>
+    <string name="what_now_upcoming">Your next flight</string>
+    <string name="what_now_current">Your current flight</string>
+    <string name="what_now_next">Your next connecting flight</string>
+    <string name="what_now_done">Your trip is complete. Have a nice day!</string>
     <string name="flight_line">%1$s: %2$s → %3$s</string>
-    <string name="gate_line">Kapı: %1$s</string>
-    <string name="gate_unknown">Kapı henüz belli değil</string>
+    <string name="gate_line">Gate: %1$s</string>
+    <string name="gate_unknown">Gate not known yet</string>
 
-    <string name="read_sign_take_photo">Tabelanın fotoğrafını çek</string>
-    <string name="read_sign_hint">Kamerayı havalimanı tabelasına doğru tutun.</string>
-    <string name="read_sign_show_staff">Görevliye kartı göster</string>
+    <string name="read_sign_take_photo">Take a photo of the sign</string>
+    <string name="read_sign_hint">Point the camera at the airport sign.</string>
+    <string name="read_sign_show_staff">Show the card to staff</string>
 
-    <string name="staff_show_hint">Bu ekranı görevliye gösterin.</string>
+    <string name="staff_show_hint">Show this screen to the staff.</string>
 
-    <string name="help_contacts">Acil durum kişileri</string>
-    <string name="help_call">Ara</string>
+    <string name="help_contacts">Emergency contacts</string>
+    <string name="help_call">Call</string>
 </resources>

@@ -34,7 +34,7 @@ fun TravelerBackButton(onBack: () -> Unit) {
     BigOutlinedButton(text = stringResource(R.string.btn_back), onClick = onBack)
 }
 
-/** "Son bilinen bilgi: 16 Eki 14:30 (İnternet yok)" */
+/** "Last known info: 16 Oct 14:30 (No internet)" — Turkish on a Turkish phone. */
 @Composable
 fun LastKnownInfo(lastSyncedUtc: Long?, isOffline: Boolean) {
     if (lastSyncedUtc == null) return
@@ -73,5 +73,6 @@ fun StaffCardView(card: StaffCard) {
 }
 
 fun formatLocalTime(epochMillis: Long): String =
-    DateTimeFormatter.ofPattern("d MMM HH:mm", Locale.forLanguageTag("tr"))
+    // Month name follows the phone language ("Oct" in English, "Eki" in Turkish).
+    DateTimeFormatter.ofPattern("d MMM HH:mm", Locale.getDefault())
         .format(Instant.ofEpochMilli(epochMillis).atZone(ZoneId.systemDefault()))

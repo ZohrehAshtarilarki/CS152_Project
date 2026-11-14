@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Shared strings in Turkish. Used when the phone language is Turkish. -->
+<resources>
+    <string name="role_title">Hoş geldiniz</string>
+    <string name="role_traveler">Yolcuyum</string>
+    <string name="role_family">Aileyim</string>
+</resources>
