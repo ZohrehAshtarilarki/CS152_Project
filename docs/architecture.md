@@ -53,6 +53,8 @@ A request always goes: **Controller → Service → Repository → database**, a
 
 `AppContainer.kt` creates the Model objects once and gives them to the controllers.
 
+**Languages:** family screens are in English (`res/values/strings_family.xml`). Traveler and shared screens are in English by default (`res/values/`) and in Turkish when the phone language is Turkish (`res/values-tr/`, same file names and keys). When you change a traveler or shared text, update both folders.
+
 ---
 
 ## Flow 1: Family signs in
@@ -131,14 +133,17 @@ Each file has **one owner**. To change someone else's file, ask them first (or o
 | `android/.../model/remote/ApiService.kt` + `ApiModels.kt` + `docs/api.md` | The API contract |
 | `android/.../view/AppRoot.kt`, `AppContainer.kt`, `view/components/Common.kt` | Used by both sides |
 
-## TODOs to start with
+## Feature status
 
-| Side | File | TODO |
-|---|---|---|
-| Family | `view/family/TripEditorScreen.kt` | Build the trip form, then call `controller.saveTrip(...)` |
-| Traveler | `model/logic/SignReader.kt` | ML Kit text recognition + English → Turkish translation |
-| Traveler | `model/logic/SignRules.kt` | Transfer / gate / baggage rules + unit tests |
-| Traveler | `controller/AppController.kt` | Ask for the family PIN before leaving Traveler Mode |
+| Side | File | Feature | Status |
+|---|---|---|---|
+| Family | `view/family/TripEditorScreen.kt` + `TripForm.kt` | Trip form: flights, contacts, staff cards. Times typed in the airport's local time, sent as UTC millis | Done (`TripFormTest`) |
+| Family | `backend/` | REST API, pairing, demo data | Done (`PairingServiceTest`, `TripServiceTest`, `TokensTest`) |
+| Traveler | `model/logic/SignReader.kt` | ML Kit text recognition + English → Turkish translation | Done |
+| Traveler | `model/logic/SignRules.kt` | Transfer / gate / baggage rules | Done (`SignRulesTest`) |
+| Traveler | `controller/AppController.kt` | Family PIN before leaving Traveler Mode | Done |
+
+**Staff card types** (`category`): `TRANSFER`, `GATE`, `BAGGAGE` (offered by Read a Sign), `HELP` (I Need Help screen), `OTHER` (general card). Every card is shown in Talk to Airport Staff, and many cards can share a type.
 
 ---
 
@@ -175,8 +180,10 @@ The app reaches the backend at `http://10.0.2.2:8080/`, which is "your computer"
 ### 4. Try the whole flow
 
 - **Family:** on one emulator, pick "I am the family", then sign in with the demo account.
-- **Traveler:** on a second emulator, pick "Yolcuyum" to see the 6-digit code.
+- **Traveler:** on a second emulator, pick "I am the traveler" ("Yolcuyum" on a Turkish phone) to see the 6-digit code.
 - Family taps **Pair traveler's phone** and types the code. The traveler phone downloads the trip.
 - Turn on **airplane mode** on the traveler emulator. The 4 buttons still work.
 
 Only one emulator? Use the Family steps with `curl` instead (see `docs/api.md`).
+
+To pair the traveler phone again, tap the exit icon at the top of the traveler home screen and enter the family PIN (`1234` in this version). This clears the saved pairing and shows the "who are you?" screen.
