@@ -52,6 +52,13 @@ DB_USER=$(whoami) DB_PASSWORD= ./mvnw spring-boot:run
 
 Then open the `android/` folder in Android Studio and click **Run** on an emulator.
 
+### Testing "Read a Sign" (Webcam Setup)
+To use your laptop's camera in the emulator to test the sign reading feature:
+1. In Android Studio, open **Device Manager**, stop your emulator, and click **Edit** (pencil icon).
+2. Click **Show Advanced Settings**.
+3. Under **Camera**, change the **Back** camera to `Webcam0` and click **Finish**.
+4. Start the emulator. macOS will ask for camera permission the first time you tap "Read a Sign".
+
 Demo family login: **demo@cs152.dev / demo1234**
 
 Full steps: [`docs/architecture.md`](docs/architecture.md#how-to-run)
