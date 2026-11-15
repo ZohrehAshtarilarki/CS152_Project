@@ -39,10 +39,12 @@ fun FamilyRoot(controller: FamilyController, onLeaveFamilyMode: () -> Unit) {
         FamilyScreen.TRIPS -> TripListScreen(
             state = state,
             onNewTrip = {
+                controller.clearMessage()
                 selectedTripId = null
                 screen = FamilyScreen.EDIT_TRIP
             },
             onEditTrip = { tripId ->
+                controller.clearMessage()
                 selectedTripId = tripId
                 screen = FamilyScreen.EDIT_TRIP
             },
@@ -57,6 +59,8 @@ fun FamilyRoot(controller: FamilyController, onLeaveFamilyMode: () -> Unit) {
 
         FamilyScreen.EDIT_TRIP -> TripEditorScreen(
             trip = state.trips.find { it.tripId == selectedTripId },
+            state = state,
+            onSave = { request -> controller.saveTrip(selectedTripId, request) { goToTrips() } },
             onBack = goToTrips,
         )
 

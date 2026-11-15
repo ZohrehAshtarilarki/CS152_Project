@@ -78,6 +78,7 @@ class FamilyController(
     /** Create (tripId == null) or replace a trip. Call this from the trip editor. */
     fun saveTrip(tripId: String?, request: TripRequest, onSaved: () -> Unit = {}) {
         viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, message = null) }
             val result = if (tripId == null) {
                 tripRepository.createTrip(request)
             } else {
@@ -89,6 +90,7 @@ class FamilyController(
                     onSaved()
                 }
                 .onFailure { showMessage("Could not save the trip.") }
+            _uiState.update { it.copy(isLoading = false) }
         }
     }
 
