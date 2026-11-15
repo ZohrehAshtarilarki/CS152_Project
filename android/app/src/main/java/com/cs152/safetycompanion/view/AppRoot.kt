@@ -39,7 +39,7 @@ fun AppRoot(container: AppContainer) {
                     initializer { FamilyController(container.authRepository, container.familyTripRepository) }
                 }
             )
-            FamilyRoot(controller = familyController, onLeaveFamilyMode = appController::resetMode)
+            FamilyRoot(controller = familyController, onLeaveFamilyMode = { appController.resetMode() })
         }
 
         AppMode.TRAVELER -> {
@@ -48,7 +48,10 @@ fun AppRoot(container: AppContainer) {
                     initializer { TravelerController(container.pairingRepository, container.travelPackageRepository) }
                 }
             )
-            TravelerRoot(controller = travelerController)
+            TravelerRoot(
+                controller = travelerController,
+                onLeaveTravelerMode = { pin -> appController.resetMode(pin) }
+            )
         }
     }
 }

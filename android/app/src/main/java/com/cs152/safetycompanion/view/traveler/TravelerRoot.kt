@@ -14,7 +14,10 @@ private enum class TravelerScreen { HOME, WHAT_NOW, READ_SIGN, TALK_TO_STAFF, I_
 
 /** VIEW (Traveler side): navigation between the traveler screens. */
 @Composable
-fun TravelerRoot(controller: TravelerController) {
+fun TravelerRoot(
+    controller: TravelerController,
+    onLeaveTravelerMode: (String) -> Boolean
+) {
     val state by controller.uiState.collectAsStateWithLifecycle()
 
     if (!state.isPaired) {
@@ -34,6 +37,7 @@ fun TravelerRoot(controller: TravelerController) {
             onTalkToStaff = { screen = TravelerScreen.TALK_TO_STAFF },
             onNeedHelp = { screen = TravelerScreen.I_NEED_HELP },
             onUpdate = controller::sync,
+            onLeave = onLeaveTravelerMode
         )
 
         TravelerScreen.WHAT_NOW -> WhatNowScreen(

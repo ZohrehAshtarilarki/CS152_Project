@@ -20,10 +20,17 @@ class AppController(private val session: SessionStore) : ViewModel() {
 
     /**
      * Go back to the "who are you?" screen.
-     * TODO: in Traveler Mode, ask for the family PIN first, so the traveler can't leave by mistake.
+     * In Traveler Mode, requires the family PIN (default: 1234) so the traveler can't leave by mistake.
      */
-    fun resetMode() {
+    fun resetMode(pin: String? = null): Boolean {
+        if (_mode.value == AppMode.TRAVELER) {
+            // Keep it simple: use a hardcoded demo PIN for now.
+            if (pin != "1234") {
+                return false
+            }
+        }
         session.clear()
         _mode.value = null
+        return true
     }
 }
