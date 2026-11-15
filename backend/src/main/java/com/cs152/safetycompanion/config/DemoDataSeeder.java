@@ -18,7 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Creates a demo family and the demo trip SFO -> IST -> ESB, so both teammates can test right away.
@@ -57,6 +60,7 @@ public class DemoDataSeeder implements CommandLineRunner {
                 List<JourneyLeg> legs = trip.getLegs();
                 if (legs.size() >= 1) legs.get(0).reschedule(now.plus(Duration.ofHours(2)), now.plus(Duration.ofHours(15)));
                 if (legs.size() >= 2) legs.get(1).reschedule(now.plus(Duration.ofHours(18)), now.plus(Duration.ofMinutes(19 * 60 + 15)));
+                addMissingDemoStaffCards(trip);
                 trip.touch();
             }
             log.info("Demo trip times moved to now. Login: {} / {}", DEMO_EMAIL, DEMO_PASSWORD);
@@ -73,19 +77,53 @@ public class DemoDataSeeder implements CommandLineRunner {
                         now.plus(Duration.ofHours(18)), now.plus(Duration.ofMinutes(19 * 60 + 15)), "D", "112", "SCHEDULED")));
         trip.replaceEmergencyContacts(List.of(
                 new EmergencyContact("Demo Caregiver", "Family / Caregiver", "+1-408-555-0199")));
-        trip.replaceStaffCards(List.of(
+        trip.replaceStaffCards(demoStaffCards());
+        trips.save(trip);
+
+        log.info("Demo data created. Login: {} / {}", DEMO_EMAIL, DEMO_PASSWORD);
+    }
+
+    /**
+     * The demo staff cards, one per category. Categories match the Android app:
+     * TRANSFER, GATE and BAGGAGE (SignRules.kt) and HELP (HelpScreen.kt).
+     * The phone fills in {GATE}, {FLIGHT} and {PHONE}.
+     */
+    private static List<StaffCard> demoStaffCards() {
+        return List.of(
                 new StaffCard("TRANSFER",
                         "Help Finding Connection Gate",
                         "Aktarma Kapısını Bulma Yardımı",
                         "I do not speak English well. Please guide me to Gate {GATE} for flight {FLIGHT}.",
                         "İngilizce iyi konuşamıyorum. Lütfen {FLIGHT} sefer sayılı uçuşum için {GATE} numaralı kapıya gitmeme yardım edin."),
+                new StaffCard("GATE",
+                        "Help Finding My Gate",
+                        "Kapımı Bulma Yardımı",
+                        "I do not speak English well. I am looking for Gate {GATE} for flight {FLIGHT}. Please show me the way.",
+                        "İngilizce iyi konuşamıyorum. {FLIGHT} sefer sayılı uçuşum için {GATE} numaralı kapıyı arıyorum. Lütfen bana yolu gösterin."),
+                new StaffCard("BAGGAGE",
+                        "Question About My Baggage",
+                        "Bagajımla İlgili Soru",
+                        "I do not speak English well. Is my checked baggage sent to my final destination, or do I need to pick it up here? My next flight: {FLIGHT}.",
+                        "İngilizce iyi konuşamıyorum. Bagajım son varış noktama mı gönderiliyor, yoksa burada mı almam gerekiyor? Sonraki uçuşum: {FLIGHT}."),
                 new StaffCard("HELP",
                         "I Need Help",
                         "Yardıma İhtiyacım Var",
                         "I am traveling alone and I need help. Please call my family: {PHONE}.",
-                        "Yalnız seyahat ediyorum ve yardıma ihtiyacım var. Lütfen ailemi arayın: {PHONE}.")));
-        trips.save(trip);
+                        "Yalnız seyahat ediyorum ve yardıma ihtiyacım var. Lütfen ailemi arayın: {PHONE}."));
+    }
 
-        log.info("Demo data created. Login: {} / {}", DEMO_EMAIL, DEMO_PASSWORD);
+    /** Old demo databases were made with only 2 cards. This adds the missing ones and keeps the rest. */
+    private static void addMissingDemoStaffCards(Trip trip) {
+        Set<String> existingCategories = trip.getStaffCards().stream()
+                .map(StaffCard::getCategory)
+                .collect(Collectors.toSet());
+        List<StaffCard> missing = demoStaffCards().stream()
+                .filter(card -> !existingCategories.contains(card.getCategory()))
+                .toList();
+        if (missing.isEmpty()) return;
+
+        List<StaffCard> cards = new ArrayList<>(trip.getStaffCards());
+        cards.addAll(missing);
+        trip.replaceStaffCards(cards);
     }
 }
