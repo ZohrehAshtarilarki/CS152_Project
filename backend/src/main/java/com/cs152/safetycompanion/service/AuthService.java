@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Locale;
+
 /** Family sign-up, login, and checking the family's token on each request. (Family side) */
 @Service
 public class AuthService {
@@ -26,7 +28,7 @@ public class AuthService {
         if (families.existsByEmailIgnoreCase(request.email().trim())) {
             throw new ApiException(HttpStatus.CONFLICT, "This email is already registered.");
         }
-        Family family = new Family(request.name().trim(), request.email().trim().toLowerCase(),
+        Family family = new Family(request.name().trim(), request.email().trim().toLowerCase(Locale.ROOT),
                 passwordEncoder.encode(request.password()));
         family.setSessionToken(Tokens.newToken());
         families.save(family);

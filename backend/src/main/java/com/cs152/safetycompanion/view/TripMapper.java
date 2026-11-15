@@ -10,8 +10,12 @@ import com.cs152.safetycompanion.view.TripViews.StaffCardView;
 import com.cs152.safetycompanion.view.TripViews.TravelPackageView;
 
 import java.time.Instant;
+import java.util.Locale;
 
-/** Converts between Model (database objects) and View (JSON shapes). */
+/**
+ * Converts between Model (database objects) and View (JSON shapes).
+ * Codes are upper-cased with Locale.ROOT: with a Turkish default locale, "ist".toUpperCase() would give "İST".
+ */
 public final class TripMapper {
 
     private TripMapper() {
@@ -53,9 +57,9 @@ public final class TripMapper {
     public static JourneyLeg toModel(LegView view) {
         return new JourneyLeg(
                 view.sequenceOrder(),
-                view.flightNumber().trim().toUpperCase(),
-                view.originAirport().trim().toUpperCase(),
-                view.destinationAirport().trim().toUpperCase(),
+                view.flightNumber().trim().toUpperCase(Locale.ROOT),
+                view.originAirport().trim().toUpperCase(Locale.ROOT),
+                view.destinationAirport().trim().toUpperCase(Locale.ROOT),
                 Instant.ofEpochMilli(view.departureTimeUtc()),
                 Instant.ofEpochMilli(view.arrivalTimeUtc()),
                 view.terminal(),

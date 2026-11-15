@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -99,6 +100,21 @@ class TripServiceTest {
         TravelPackageView result = tripService.createTrip(family, request);
 
         assertEquals("tr", result.targetLanguage());
+    }
+
+    @Test
+    void createTrip_onAServerSetToTurkish_keepsNormalAirportCodes() {
+        when(trips.save(any(Trip.class))).thenAnswer(call -> call.getArgument(0));
+        Locale oldLocale = Locale.getDefault();
+        try {
+            Locale.setDefault(Locale.forLanguageTag("tr"));
+
+            TravelPackageView result = tripService.createTrip(family, fullRequest("Ayşe Yılmaz"));
+
+            assertEquals("IST", result.legs().get(0).destinationAirport(), "must not become İST (dotted İ)");
+        } finally {
+            Locale.setDefault(oldLocale);
+        }
     }
 
     // ---------- Read ----------
