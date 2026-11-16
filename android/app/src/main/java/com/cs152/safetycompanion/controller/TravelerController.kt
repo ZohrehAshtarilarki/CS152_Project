@@ -22,6 +22,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 enum class PairingStatus { NOT_STARTED, WAITING, EXPIRED, ERROR }
+enum class SyncStatus { IDLE, SYNCING, SUCCESS, OFFLINE }
 
 /** Everything the Traveler screens need to draw themselves. */
 data class TravelerUiState(
@@ -31,6 +32,7 @@ data class TravelerUiState(
     val trip: TravelPackage? = null,
     val lastSyncedUtc: Long? = null,
     val isOffline: Boolean = false,
+    val syncStatus: SyncStatus = SyncStatus.IDLE,
     val stage: JourneyStage = JourneyStage.NoTrip,
     val isReadingSign: Boolean = false,
     val signGuidance: SignGuidance? = null,
@@ -110,8 +112,21 @@ class TravelerController(
     /** Download the newest trip. With no internet, the saved trip stays on screen. */
     fun sync() {
         viewModelScope.launch {
+            _uiState.update { it.copy(syncStatus = SyncStatus.SYNCING) }
             val result = travelPackageRepository.sync()
-            _uiState.update { it.copy(isOffline = result !is SyncResult.Success) }
+            val isOffline = result !is SyncResult.Success
+            _uiState.update { 
+                it.copy(
+                    isOffline = isOffline, 
+                    syncStatus = if (isOffline) SyncStatus.OFFLINE else SyncStatus.SUCCESS 
+                ) 
+            }
+            
+            // Hide the status message after a short delay so it doesn't stay forever
+            delay(3000)
+            _uiState.update { 
+                if (it.syncStatus != SyncStatus.SYNCING) it.copy(syncStatus = SyncStatus.IDLE) else it 
+            }
         }
     }
 

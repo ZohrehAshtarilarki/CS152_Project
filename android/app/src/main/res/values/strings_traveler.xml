@@ -32,6 +32,15 @@
     <string name="read_sign_take_photo">Take a photo of the sign</string>
     <string name="read_sign_hint">Point the camera at the airport sign.</string>
     <string name="read_sign_show_staff">Show the card to staff</string>
+    <string name="sign_advice_baggage_warning">Attention! You have a connecting flight. Do not go to the baggage claim area.</string>
+    <string name="sign_advice_transfer">You are heading towards the transfer area. Your connecting flight gate is: %1$s.</string>
+    <string name="sign_advice_gate">You are being directed to the flight gates. Your gate is: %1$s.</string>
+    <string name="sign_advice_baggage">You are heading towards the baggage claim area. Please collect your baggage.</string>
+    <string name="sign_advice_unknown">The sign was not fully understood. Please ask the staff.</string>
+
+    <string name="sync_status_updating">Updating…</string>
+    <string name="sync_status_success">Updated!</string>
+    <string name="sync_status_offline">No internet. Showing saved info.</string>
 
     <string name="staff_show_hint">Show this screen to the staff.</string>
 

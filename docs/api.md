@@ -27,6 +27,7 @@ Base URL: `http://localhost:8080` (from the Android emulator: `http://10.0.2.2:8
 ```
 
 **TravelPackage** (the shared contract: the traveler phone saves exactly this)
+`category` is one of `TRANSFER`, `GATE`, `BAGGAGE` (used by Read a Sign), `HELP` (I Need Help screen) or `OTHER` (general card, only in Talk to Airport Staff). Many cards can have the same category.
 ```json
 {
   "tripId": "a1b2...",

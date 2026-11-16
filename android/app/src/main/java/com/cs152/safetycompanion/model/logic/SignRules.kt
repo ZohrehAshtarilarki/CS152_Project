@@ -2,18 +2,18 @@ package com.cs152.safetycompanion.model.logic
 
 import java.util.Locale
 
-enum class SignCategory { TRANSFER, GATE, BAGGAGE, UNKNOWN }
+enum class SignAdviceType { BAGGAGE_WARNING, TRANSFER, GATE, BAGGAGE, UNKNOWN }
 
 data class SignGuidance(
-    val category: SignCategory,
-    /** The advice shown to the traveler, in Turkish (correct Turkish letters). */
-    val messageTr: String,
+    val type: SignAdviceType,
+    /** The gate number to substitute into the message, if any. */
+    val gate: String? = null,
     /** true = also offer the staff card, because the app is not sure. */
     val showStaffCard: Boolean,
 )
 
 /**
- * Turns the text read from a sign + the current trip step into simple Turkish advice.
+ * Turns the text read from a sign + the current trip step into advice type and arguments.
  */
 class SignRules {
 
@@ -37,45 +37,42 @@ class SignRules {
         // 1. If connecting flight, BAGGAGE warning takes precedence.
         if (hasBaggage && activeStage?.nextLeg != null) {
             return SignGuidance(
-                category = SignCategory.BAGGAGE,
-                messageTr = "Dikkat! Bağlantı uçuşunuz var. Bagaj alanına gitmeyin.",
+                type = SignAdviceType.BAGGAGE_WARNING,
                 showStaffCard = false
             )
         }
 
         // 2. Transfer / Connection
         if (hasTransfer) {
-            val gateStr = activeStage?.nextLeg?.gate ?: "henüz belli değil"
+            val gateStr = activeStage?.nextLeg?.gate
             return SignGuidance(
-                category = SignCategory.TRANSFER,
-                messageTr = "Aktarma alanına doğru gidiyorsunuz. Bağlantı uçuşunuzun kapısı: $gateStr.",
-                showStaffCard = activeStage?.nextLeg?.gate == null
+                type = SignAdviceType.TRANSFER,
+                gate = gateStr,
+                showStaffCard = gateStr == null
             )
         }
 
         // 3. Gate
         if (hasGate) {
-            val gateStr = activeStage?.currentLeg?.gate ?: "henüz belli değil"
+            val gateStr = activeStage?.currentLeg?.gate
             return SignGuidance(
-                category = SignCategory.GATE,
-                messageTr = "Uçuş kapılarına yönlendiriliyorsunuz. Sizin kapınız: $gateStr.",
-                showStaffCard = activeStage?.currentLeg?.gate == null
+                type = SignAdviceType.GATE,
+                gate = gateStr,
+                showStaffCard = gateStr == null
             )
         }
 
         // 4. Baggage (when it's safe to collect)
         if (hasBaggage) {
             return SignGuidance(
-                category = SignCategory.BAGGAGE,
-                messageTr = "Bagaj alım alanına doğru gidiyorsunuz. Lütfen bagajınızı alın.",
+                type = SignAdviceType.BAGGAGE,
                 showStaffCard = false
             )
         }
 
         // Safe default: never guess, send the traveler to staff.
         return SignGuidance(
-            category = SignCategory.UNKNOWN,
-            messageTr = "Tabela tam anlaşılamadı. Lütfen görevliye danışın.",
+            type = SignAdviceType.UNKNOWN,
             showStaffCard = true,
         )
     }

@@ -10,6 +10,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import com.cs152.safetycompanion.R
 import com.cs152.safetycompanion.controller.TravelerUiState
+import com.cs152.safetycompanion.model.logic.SignAdviceType
+import com.cs152.safetycompanion.model.logic.SignGuidance
 import com.cs152.safetycompanion.view.components.BigButton
 import com.cs152.safetycompanion.view.components.ScreenColumn
 import com.cs152.safetycompanion.view.components.ScreenTitle
@@ -37,7 +39,7 @@ fun ReadSignScreen(
         when {
             state.isReadingSign -> CircularProgressIndicator()
             guidance != null -> {
-                BigText(guidance.messageTr)
+                BigText(getLocalizedMessage(guidance))
                 if (guidance.showStaffCard) {
                     BigButton(text = stringResource(R.string.read_sign_show_staff), onClick = onShowStaffCard)
                 }
@@ -46,5 +48,17 @@ fun ReadSignScreen(
         }
 
         TravelerBackButton(onBack)
+    }
+}
+
+@Composable
+private fun getLocalizedMessage(guidance: SignGuidance): String {
+    val defaultGateStr = stringResource(R.string.gate_unknown)
+    return when (guidance.type) {
+        SignAdviceType.BAGGAGE_WARNING -> stringResource(R.string.sign_advice_baggage_warning)
+        SignAdviceType.TRANSFER -> stringResource(R.string.sign_advice_transfer, guidance.gate ?: defaultGateStr)
+        SignAdviceType.GATE -> stringResource(R.string.sign_advice_gate, guidance.gate ?: defaultGateStr)
+        SignAdviceType.BAGGAGE -> stringResource(R.string.sign_advice_baggage)
+        SignAdviceType.UNKNOWN -> stringResource(R.string.sign_advice_unknown)
     }
 }

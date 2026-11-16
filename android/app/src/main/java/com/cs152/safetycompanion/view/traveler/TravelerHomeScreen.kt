@@ -4,12 +4,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -25,6 +28,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cs152.safetycompanion.R
+import com.cs152.safetycompanion.controller.SyncStatus
 import com.cs152.safetycompanion.controller.TravelerUiState
 import com.cs152.safetycompanion.view.components.BigButton
 import com.cs152.safetycompanion.view.components.ScreenColumn
@@ -63,8 +67,18 @@ fun TravelerHomeScreen(
         BigButton(text = stringResource(R.string.btn_talk_staff), onClick = onTalkToStaff)
         BigButton(text = stringResource(R.string.btn_need_help), onClick = onNeedHelp)
         LastKnownInfo(lastSyncedUtc = state.lastSyncedUtc, isOffline = state.isOffline)
-        TextButton(onClick = onUpdate) {
-            Text(stringResource(R.string.btn_update), fontSize = 18.sp)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            TextButton(onClick = onUpdate) {
+                Text(stringResource(R.string.btn_update), fontSize = 18.sp)
+            }
+            if (state.syncStatus == SyncStatus.SYNCING) {
+                CircularProgressIndicator(modifier = Modifier.padding(start = 8.dp).size(24.dp))
+            }
+        }
+        if (state.syncStatus == SyncStatus.SUCCESS) {
+            Text(stringResource(R.string.sync_status_success), color = MaterialTheme.colorScheme.primary)
+        } else if (state.syncStatus == SyncStatus.OFFLINE) {
+            Text(stringResource(R.string.sync_status_offline), color = MaterialTheme.colorScheme.error)
         }
     }
 

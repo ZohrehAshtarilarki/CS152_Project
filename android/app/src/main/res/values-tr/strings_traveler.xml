@@ -31,6 +31,15 @@
     <string name="read_sign_take_photo">Tabelanın fotoğrafını çek</string>
     <string name="read_sign_hint">Kamerayı havalimanı tabelasına doğru tutun.</string>
     <string name="read_sign_show_staff">Görevliye kartı göster</string>
+    <string name="sign_advice_baggage_warning">Dikkat! Bağlantı uçuşunuz var. Bagaj alanına gitmeyin.</string>
+    <string name="sign_advice_transfer">Aktarma alanına doğru gidiyorsunuz. Bağlantı uçuşunuzun kapısı: %1$s.</string>
+    <string name="sign_advice_gate">Uçuş kapılarına yönlendiriliyorsunuz. Sizin kapınız: %1$s.</string>
+    <string name="sign_advice_baggage">Bagaj alım alanına doğru gidiyorsunuz. Lütfen bagajınızı alın.</string>
+    <string name="sign_advice_unknown">Tabela tam anlaşılamadı. Lütfen görevliye danışın.</string>
+
+    <string name="sync_status_updating">Güncelleniyor…</string>
+    <string name="sync_status_success">Güncellendi!</string>
+    <string name="sync_status_offline">İnternet yok. Kayıtlı bilgiler gösteriliyor.</string>
 
     <string name="staff_show_hint">Bu ekranı görevliye gösterin.</string>
 

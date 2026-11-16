@@ -29,11 +29,12 @@ class SignRulesTest {
         val stage = JourneyStage.Active(currentLeg = dummyLeg, nextLeg = nextLeg)
         
         val guidanceEn = rules.evaluate("Follow the signs for International Transfers", stage)
-        assertEquals(SignCategory.TRANSFER, guidanceEn.category)
-        assertTrue(guidanceEn.messageTr.contains("G12"))
+        assertEquals(SignAdviceType.TRANSFER, guidanceEn.type)
+        assertEquals("G12", guidanceEn.gate)
+        assertFalse(guidanceEn.showStaffCard) // Since we know the gate
         
         val guidanceTr = rules.evaluate("Transit ve aktarma yolcuları", stage)
-        assertEquals(SignCategory.TRANSFER, guidanceTr.category)
+        assertEquals(SignAdviceType.TRANSFER, guidanceTr.type)
     }
 
     @Test
@@ -41,11 +42,12 @@ class SignRulesTest {
         val stage = JourneyStage.Active(currentLeg = dummyLeg, nextLeg = null)
         
         val guidanceEn = rules.evaluate("Gate G5 Boarding", stage)
-        assertEquals(SignCategory.GATE, guidanceEn.category)
-        assertTrue(guidanceEn.messageTr.contains("G5"))
+        assertEquals(SignAdviceType.GATE, guidanceEn.type)
+        assertEquals("G5", guidanceEn.gate)
+        assertFalse(guidanceEn.showStaffCard)
         
         val guidanceTr = rules.evaluate("Kapı boarding", stage)
-        assertEquals(SignCategory.GATE, guidanceTr.category)
+        assertEquals(SignAdviceType.GATE, guidanceTr.type)
     }
 
     @Test
@@ -53,8 +55,7 @@ class SignRulesTest {
         val stage = JourneyStage.Active(currentLeg = dummyLeg, nextLeg = nextLeg)
         
         val guidance = rules.evaluate("Baggage Claim", stage)
-        assertEquals(SignCategory.BAGGAGE, guidance.category)
-        assertEquals("Dikkat! Bağlantı uçuşunuz var. Bagaj alanına gitmeyin.", guidance.messageTr)
+        assertEquals(SignAdviceType.BAGGAGE_WARNING, guidance.type)
         assertFalse(guidance.showStaffCard)
     }
 
@@ -63,21 +64,21 @@ class SignRulesTest {
         val stage = JourneyStage.Active(currentLeg = dummyLeg, nextLeg = null)
         
         val guidance = rules.evaluate("Baggage claim", stage)
-        assertEquals(SignCategory.BAGGAGE, guidance.category)
-        assertTrue(guidance.messageTr.contains("Bagaj")) // something affirmative
+        assertEquals(SignAdviceType.BAGGAGE, guidance.type)
+        assertFalse(guidance.showStaffCard)
     }
 
     @Test
     fun `when words from multiple categories are present, prioritizes BAGGAGE warning if connecting`() {
         val stage = JourneyStage.Active(currentLeg = dummyLeg, nextLeg = nextLeg)
         val guidance = rules.evaluate("Baggage Claim and Transfers", stage)
-        assertEquals(SignCategory.BAGGAGE, guidance.category) // Warning is most critical
+        assertEquals(SignAdviceType.BAGGAGE_WARNING, guidance.type) // Warning is most critical
     }
     
     @Test
     fun `handles Turkish letters correctly without splitting words`() {
         val stage = JourneyStage.Active(currentLeg = dummyLeg, nextLeg = null)
         val guidance = rules.evaluate("KAPI 5", stage) // Uppercase Turkish
-        assertEquals(SignCategory.GATE, guidance.category)
+        assertEquals(SignAdviceType.GATE, guidance.type)
     }
 }
