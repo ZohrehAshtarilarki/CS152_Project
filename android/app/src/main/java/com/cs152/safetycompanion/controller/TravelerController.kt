@@ -142,8 +142,14 @@ class TravelerController(
     fun readSign(photo: Bitmap) {
         viewModelScope.launch {
             _uiState.update { it.copy(isReadingSign = true, signGuidance = null) }
-            val text = signReader.readText(photo)
-            val guidance = signRules.evaluate(text, _uiState.value.stage)
+            val englishText = signReader.readText(photo)
+            // Translate to Turkish to maximize the chance of hitting our Turkish keywords in SignRules
+            val turkishText = signReader.translateToTurkish(englishText)
+            
+            // Combine both the raw and translated text so rules can catch English OR Turkish keywords
+            val combinedText = "$englishText $turkishText"
+            val guidance = signRules.evaluate(combinedText, _uiState.value.stage)
+            
             _uiState.update { it.copy(isReadingSign = false, signGuidance = guidance) }
         }
     }
